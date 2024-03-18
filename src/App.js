@@ -112,6 +112,8 @@ import Poultry1 from "./MVPComponents/HomeComponent/Poultry1";
 // Styling
 import "./App.css";
 
+// Refactored Routes
+import getRoutes from './routes';
 function App() {
   const [cart, setCart] = useState(() => {
     const storedCartData = JSON.parse(
@@ -178,6 +180,7 @@ function App() {
   // );
   // }
   // };
+
 
   const handleStoreSelection = (store) => {
     setSelectedStore(store);
@@ -527,6 +530,15 @@ function App() {
     }
   };
 
+  const routes = getRoutes({
+    authUser,
+    favorites,
+    handleAddToFavoritesCart,
+    handleAddFavoritesToCart,
+    user: authUser ? authUser.uid : null,
+    ... <more handlers that routes file accepts>
+  });
+
   return (
     <div className="dark:bg-gray-900">
       <BrowserRouter>
@@ -535,6 +547,13 @@ function App() {
           handleThemeChange={handleThemeChange}
           updateCartLength={setCartLength}
         />
+        // In App.js
+        // note we rename component to Component to treat it as a React component and they must start with an uppercase letter.
+        {/*<Routes>*/}
+        {/*  {routes.map(({ path, element }) => (*/}
+        {/*    <Route key={path} path={path} element={element} />*/}
+        {/*  ))}*/}
+        {/*</Routes>*/}
         <Routes>
           <Route element={<LandingPage />} path="/" />
           <Route element={<Home addToCart={handleAddToCart} />} path="/home" />
