@@ -6,14 +6,31 @@ import { FaMinus, FaPlus } from "react-icons/fa6";
 import axios from "axios";
 import ReactToPrint from "react-to-print";
 
-const CartComponent = ({
-  deleteItem,
-  clearCart,
-  cart,
-  cartLength,
-  handleQuantityChange,
-  updateCartLength,
-}) => {
+
+interface CartItem {
+  id: string;
+  name: string;
+  image: string;
+  length: number;
+}
+
+interface CartComponentProps {
+  deleteItem: (id: string) => void;
+  clearCart: () => void;
+  cart: CartItem[];
+  cartLength: number;
+  handleQuantityChange: (cart: CartItem[]) => void;
+  updateCartLength: (length: number) => void;
+}
+
+const CartComponent: FunctionComponent<CartComponentProps> = ({
+    deleteItem,
+    clearCart,
+    cart,
+    cartLength,
+    handleQuantityChange,
+    updateCartLength,
+  }) => {
   const [itemQuantities, setItemQuantities] = useState({});
   const [comparison, setComparison] = useState({});
   const [shoppingList, setShoppingList] = useState(
