@@ -113,7 +113,8 @@ import Poultry1 from "./MVPComponents/HomeComponent/Poultry1";
 import "./App.css";
 
 // Refactored Routes
-import getRoutes from './routes';
+import AppRoutes from "./routes";
+
 function App() {
   const [cart, setCart] = useState(() => {
     const storedCartData = JSON.parse(
@@ -530,14 +531,22 @@ function App() {
     }
   };
 
-  const routes = getRoutes({
-    authUser,
+  // All the state and handlers that need to be passed down to the routes
+  const routeProps = {
+    cart,
+    setCart,
+    cartLength,
+    setCartLength,
     favorites,
+    setFavorites,
+    authUser,
+    user,
+    handleAddToCart,
     handleAddToFavoritesCart,
     handleAddFavoritesToCart,
-    user: authUser ? authUser.uid : null,
-    ... <more handlers that routes file accepts>
-  });
+    handleAddToFavorites,
+    // ... any other props or handlers that are needed by the AppRoutes component
+  };
 
   return (
     <div className="dark:bg-gray-900">
@@ -547,13 +556,7 @@ function App() {
           handleThemeChange={handleThemeChange}
           updateCartLength={setCartLength}
         />
-        // In App.js
-        // note we rename component to Component to treat it as a React component and they must start with an uppercase letter.
-        {/*<Routes>*/}
-        {/*  {routes.map(({ path, element }) => (*/}
-        {/*    <Route key={path} path={path} element={element} />*/}
-        {/*  ))}*/}
-        {/*</Routes>*/}
+        {/*<AppRoutes {...routeProps} /> /!* Replaces the previous <Routes> block *!/*/}
         <Routes>
           <Route element={<LandingPage />} path="/" />
           <Route element={<Home addToCart={handleAddToCart} />} path="/home" />
