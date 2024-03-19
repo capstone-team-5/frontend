@@ -1,6 +1,6 @@
 import React, { lazy, Suspense } from 'react';
 import {Route, Routes} from "react-router-dom";
-import LoadingComponent from './components/LoadingComponent'; // You need to create this component
+import LoadingComponent from './components/LoadingComponent'; // This does not exist yet! Do this and put it in Suspense.
 
 // Lazy-loaded components using lazy
 const Favorites = lazy(() => import('./Pages/Favorites'));

@@ -1,10 +1,11 @@
 //This will function is for the user's cart before they are logged in
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, FunctionComponent } from "react";
 import { Link } from "react-router-dom";
-import { FaMinus, FaPlus } from "react-icons/fa6";
+import { FaMinus, FaPlus } from "react-icons/fa"; // Changed from fa6
 import axios from "axios";
 import ReactToPrint from "react-to-print";
+
 
 
 interface CartItem {
@@ -23,6 +24,7 @@ interface CartComponentProps {
   updateCartLength: (length: number) => void;
 }
 
+
 const CartComponent: FunctionComponent<CartComponentProps> = ({
     deleteItem,
     clearCart,
@@ -31,22 +33,19 @@ const CartComponent: FunctionComponent<CartComponentProps> = ({
     handleQuantityChange,
     updateCartLength,
   }) => {
-  const [itemQuantities, setItemQuantities] = useState({});
+  const [itemQuantities, setItemQuantities] = useState<Record<string, number>>({});
   const [comparison, setComparison] = useState({});
-  const [shoppingList, setShoppingList] = useState(
-    "Your shopping list goes here."
-  );
-  const componentRef = useRef(null);
+  const [shoppingList, setShoppingList] = useState<string>("Your shopping list goes here.");
+  const componentRef = useRef<HTMLDivElement>(null);
+
 
   // Log the JSON representation of itemQuantities
   // console.log("itemQuantities:", JSON.stringify(itemQuantities, null, 2));
-
   useEffect(() => {
-    const quantities = cart.reduce((quantities, item) => {
+    const quantities: Record<string, number> = cart.reduce((quantities, item) => {
       quantities[item.id] = item.length;
       return quantities;
     }, {});
-
     setItemQuantities(quantities);
   }, [cart]);
 
