@@ -4,6 +4,7 @@ import React, { useState, useEffect, useRef, FunctionComponent } from "react";
 import { Link } from "react-router-dom";
 import { FaMinus, FaPlus } from "react-icons/fa"; // Changed from fa6
 import axios from "axios";
+import StyledButton from "../shared/StyledButton";
 import ReactToPrint from "react-to-print";
 
 
@@ -215,34 +216,12 @@ const CartComponent: FunctionComponent<CartComponentProps> = ({
               </tbody>
             </table>
           </div>
-          <button
-            className="inline-flex justify-center items-center py-3 px-5 text-base font-medium text-center text-white rounded-lg bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 dark:focus:ring-blue-900 mr-8"
-            onClick={clearCart}
-          >
-            Clear Cart
-          </button>
+          <StyledButton onClick={clearCart}>Clear Cart</StyledButton>
           <Link to="/price-compare">
-            <button
-              className="inline-flex justify-center items-center py-3 px-5 text-base font-medium text-center text-white rounded-lg bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 dark:focus:ring-blue-900 mr-8"
-              onClick={handleSubmit}
-            >
-              Confirm Your Cart!
-            </button>
+            <StyledButton onClick={handleSubmit}>Confirm Your Cart!</StyledButton>
           </Link>
-          <button
-            className="inline-flex justify-center items-center py-3 px-5 text-base font-medium text-center text-white rounded-lg bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 dark:focus:ring-blue-900 mr-8"
-            onClick={() => {
-              window.print();
-            }}
-          >
-            Print Shopping List
-          </button>
-          <button
-            className="inline-flex justify-center items-center py-3 px-5 text-base font-medium text-center text-white rounded-lg bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 dark:focus:ring-blue-900 mr-8"
-            onClick={handleCopyToClipboard}
-          >
-            Copy Shopping List
-          </button>
+          <StyledButton onClick={() => window.print()}>Print Shopping List</StyledButton>
+          <StyledButton onClick={handleCopyToClipboard}>Copy Shopping List</StyledButton>
         </div>
       )}
     </div>
