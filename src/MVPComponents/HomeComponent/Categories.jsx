@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import Spinner from './Spinner'; // Let's assume you have a Spinner component for the category images
 
 const Categories = () => {
   const GroceryCategories = [
@@ -174,6 +175,29 @@ const Categories = () => {
     // Add other partner objects here
   ];
 
+  // if you wanted a spinner until all images load
+  // const [imagesToLoad, setImagesToLoad] = useState(GroceryCategories.length);
+  //
+  // const imageLoaded = () => {
+  //   setImagesToLoad((prevCount) => prevCount - 1);
+  // };
+  //
+  // useEffect(() => {
+  //   if (imagesToLoad === 0) {
+  //     setLoading(false);
+  //   }
+  // }, [imagesToLoad]);
+
+  //if (loading) {
+  //   return <Spinner />;
+  // }
+  // and then your image has this onLoad handler:
+  // <img
+  //   src={category.logoSrc}
+  //   alt={category.name}
+  //   className="w-full h-full rounded-lg shadow-xl object-cover"
+  //   onLoad={imageLoaded}
+  // />
   const [showAllCategories, setShowAllCategories] = useState(false);
   const displayedCategories = showAllCategories
     ? GroceryCategories
@@ -182,6 +206,13 @@ const Categories = () => {
   const handleToggleCategories = () => {
     setShowAllCategories(!showAllCategories);
   };
+
+  const [loadedImages, setLoadedImages] = useState({});
+
+  const handleImageLoaded = (name) => {
+    setLoadedImages(prevState => ({ ...prevState, [name]: true }));
+  };
+
 
   return (
     <section className="bg-white dark:bg-gray-900">
@@ -199,11 +230,15 @@ const Categories = () => {
                   to={category.link || "#"}
                   className="flex flex-col items-center p-4 rounded-lg"
                 >
-                  <div className="w-48 h-40 mb-4">
+                  <div
+                    className="w-48 h-40 mb-4 relative"> {/* the relative helps maintain the layout's stability. Even if the image is not yet visible (because it's still loading and has the class invisible), the space for the image is reserved, preventing layout shifts when the image loads. */}
+                    {!loadedImages[category.name] &&
+                      <Spinner/>} {/* Show spinner until image is loaded. Once the image loads, the onLoad handler is triggered, updating the state and making the image visible while hiding the spinner. */}
                     <img
                       src={category.logoSrc}
                       alt={category.name}
-                      className="w-full h-full rounded-lg shadow-xl object-cover"
+                      className={`w-full h-full rounded-lg shadow-xl object-cover ${!loadedImages[category.name] ? 'invisible' : ''}`}
+                      onLoad={() => handleImageLoaded(category.name)}
                     />
                   </div>
                   <h3 className="mt-2 text-center font-bold">

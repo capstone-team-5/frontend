@@ -1,35 +1,52 @@
 //This will function is for the user's cart before they are logged in
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, FunctionComponent } from "react";
 import { Link } from "react-router-dom";
-import { FaMinus, FaPlus } from "react-icons/fa6";
+import { FaMinus, FaPlus } from "react-icons/fa"; // Changed from fa6
 import axios from "axios";
+import StyledButton from "../shared/StyledButton";
 import ReactToPrint from "react-to-print";
 
-const CartComponent = ({
-  deleteItem,
-  clearCart,
-  cart,
-  cartLength,
-  handleQuantityChange,
-  updateCartLength,
-}) => {
-  const [itemQuantities, setItemQuantities] = useState({});
+
+
+interface CartItem {
+  id: string;
+  name: string;
+  image: string;
+  length: number;
+}
+
+interface CartComponentProps {
+  deleteItem: (id: string) => void;
+  clearCart: () => void;
+  cart: CartItem[];
+  cartLength: number;
+  handleQuantityChange: (cart: CartItem[]) => void;
+  updateCartLength: (length: number) => void;
+}
+
+
+const CartComponent: FunctionComponent<CartComponentProps> = ({
+    deleteItem,
+    clearCart,
+    cart,
+    cartLength,
+    handleQuantityChange,
+    updateCartLength,
+  }) => {
+  const [itemQuantities, setItemQuantities] = useState<Record<string, number>>({});
   const [comparison, setComparison] = useState({});
-  const [shoppingList, setShoppingList] = useState(
-    "Your shopping list goes here."
-  );
-  const componentRef = useRef(null);
+  const [shoppingList, setShoppingList] = useState<string>("Your shopping list goes here.");
+  const componentRef = useRef<HTMLDivElement>(null);
+
 
   // Log the JSON representation of itemQuantities
   // console.log("itemQuantities:", JSON.stringify(itemQuantities, null, 2));
-
   useEffect(() => {
-    const quantities = cart.reduce((quantities, item) => {
+    const quantities: Record<string, number> = cart.reduce((quantities, item) => {
       quantities[item.id] = item.length;
       return quantities;
     }, {});
-
     setItemQuantities(quantities);
   }, [cart]);
 
@@ -199,34 +216,12 @@ const CartComponent = ({
               </tbody>
             </table>
           </div>
-          <button
-            className="inline-flex justify-center items-center py-3 px-5 text-base font-medium text-center text-white rounded-lg bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 dark:focus:ring-blue-900 mr-8"
-            onClick={clearCart}
-          >
-            Clear Cart
-          </button>
+          <StyledButton onClick={clearCart}>Clear Cart</StyledButton>
           <Link to="/price-compare">
-            <button
-              className="inline-flex justify-center items-center py-3 px-5 text-base font-medium text-center text-white rounded-lg bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 dark:focus:ring-blue-900 mr-8"
-              onClick={handleSubmit}
-            >
-              Confirm Your Cart!
-            </button>
+            <StyledButton onClick={handleSubmit}>Confirm Your Cart!</StyledButton>
           </Link>
-          <button
-            className="inline-flex justify-center items-center py-3 px-5 text-base font-medium text-center text-white rounded-lg bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 dark:focus:ring-blue-900 mr-8"
-            onClick={() => {
-              window.print();
-            }}
-          >
-            Print Shopping List
-          </button>
-          <button
-            className="inline-flex justify-center items-center py-3 px-5 text-base font-medium text-center text-white rounded-lg bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 dark:focus:ring-blue-900 mr-8"
-            onClick={handleCopyToClipboard}
-          >
-            Copy Shopping List
-          </button>
+          <StyledButton onClick={() => window.print()}>Print Shopping List</StyledButton>
+          <StyledButton onClick={handleCopyToClipboard}>Copy Shopping List</StyledButton>
         </div>
       )}
     </div>

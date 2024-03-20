@@ -5,8 +5,20 @@ import { Link } from "react-router-dom";
 
 const API = process.env.REACT_APP_BACKEND_API;
 
-const Seafood = ({ addToCart }) => {
-  const [products, setProducts] = useState([]);
+
+interface ProductType {
+  product_id: number;
+  product_name: string;
+  product_image: string;
+  // add more properties as needed
+}
+
+interface SeafoodProps {
+  addToCart: (product: ProductType) => void;
+}
+
+const Seafood: React.FC<SeafoodProps> = ({ addToCart }) => {
+  const [products, setProducts] = useState<ProductType[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
@@ -67,7 +79,7 @@ const Seafood = ({ addToCart }) => {
                   className="duration-700 ease-in-out dark:bg-gray-900"
                   data-carousel-item
                  >
-                          
+
                 <Link to={`/product/${product.product_id}`}>
                   <img
                     className="group-hover:opacity-60 transition duration-500 w-full h-48 object-contain"

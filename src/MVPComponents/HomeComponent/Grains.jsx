@@ -2,36 +2,14 @@ import axios from "axios";
 import React, { useState, useEffect } from "react";
 import { AiOutlineHeart } from "react-icons/ai";
 import { Link } from "react-router-dom";
+import useFetchData from '../../hooks/useFetchData';
 
 const API = process.env.REACT_APP_BACKEND_API;
 
 const Grains = ({ addToCart }) => {
-  const [products, setProducts] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const productsPerPage = 15;
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get(`${API}/products/grains`, {
-          params: {
-            page: currentPage, // Send the current page
-            pageSize: productsPerPage, // Send the products per page
-          },
-        });
-        setProducts(response.data);
-        setLoading(false);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-        setError("An error occurred while fetching data.");
-        setLoading(false);
-      }
-    };
-
-    fetchData();
-  }, [currentPage]);
+  const { products, loading, error } = useFetchData(`${process.env.REACT_APP_BACKEND_API}/products/grains`, currentPage, productsPerPage);
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
