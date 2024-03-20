@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import Spinner from './Spinner'; // Let's assume you have a Spinner component for the category images
 
 const Categories = () => {
   const GroceryCategories = [
@@ -183,6 +184,13 @@ const Categories = () => {
     setShowAllCategories(!showAllCategories);
   };
 
+  const [loadedImages, setLoadedImages] = useState({});
+
+  const handleImageLoaded = (name) => {
+    setLoadedImages(prevState => ({ ...prevState, [name]: true }));
+  };
+
+
   return (
     <section className="bg-white dark:bg-gray-900">
       <div className="py-8 lg:py-16 mx-auto max-w-screen-xl mt-1 px-4">
@@ -199,11 +207,13 @@ const Categories = () => {
                   to={category.link || "#"}
                   className="flex flex-col items-center p-4 rounded-lg"
                 >
-                  <div className="w-48 h-40 mb-4">
+                  <div className="w-48 h-40 mb-4 relative"> {/* the relative helps maintain the layout's stability. Even if the image is not yet visible (because it's still loading and has the class invisible), the space for the image is reserved, preventing layout shifts when the image loads. */}
+                    {!loadedImages[category.name] && <Spinner />} {/* Show spinner until image is loaded. Once the image loads, the onLoad handler is triggered, updating the state and making the image visible while hiding the spinner. */}
                     <img
                       src={category.logoSrc}
                       alt={category.name}
-                      className="w-full h-full rounded-lg shadow-xl object-cover"
+                      className={`w-full h-full rounded-lg shadow-xl object-cover ${!loadedImages[category.name] ? 'invisible' : ''}`}
+                      onLoad={() => handleImageLoaded(category.name)}
                     />
                   </div>
                   <h3 className="mt-2 text-center font-bold">
