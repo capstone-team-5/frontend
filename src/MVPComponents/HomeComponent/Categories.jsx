@@ -175,6 +175,29 @@ const Categories = () => {
     // Add other partner objects here
   ];
 
+  // if you wanted a spinner until all images load
+  // const [imagesToLoad, setImagesToLoad] = useState(GroceryCategories.length);
+  //
+  // const imageLoaded = () => {
+  //   setImagesToLoad((prevCount) => prevCount - 1);
+  // };
+  //
+  // useEffect(() => {
+  //   if (imagesToLoad === 0) {
+  //     setLoading(false);
+  //   }
+  // }, [imagesToLoad]);
+
+  //if (loading) {
+  //   return <Spinner />;
+  // }
+  // and then your image has this onLoad handler:
+  // <img
+  //   src={category.logoSrc}
+  //   alt={category.name}
+  //   className="w-full h-full rounded-lg shadow-xl object-cover"
+  //   onLoad={imageLoaded}
+  // />
   const [showAllCategories, setShowAllCategories] = useState(false);
   const displayedCategories = showAllCategories
     ? GroceryCategories
@@ -207,8 +230,10 @@ const Categories = () => {
                   to={category.link || "#"}
                   className="flex flex-col items-center p-4 rounded-lg"
                 >
-                  <div className="w-48 h-40 mb-4 relative"> {/* the relative helps maintain the layout's stability. Even if the image is not yet visible (because it's still loading and has the class invisible), the space for the image is reserved, preventing layout shifts when the image loads. */}
-                    {!loadedImages[category.name] && <Spinner />} {/* Show spinner until image is loaded. Once the image loads, the onLoad handler is triggered, updating the state and making the image visible while hiding the spinner. */}
+                  <div
+                    className="w-48 h-40 mb-4 relative"> {/* the relative helps maintain the layout's stability. Even if the image is not yet visible (because it's still loading and has the class invisible), the space for the image is reserved, preventing layout shifts when the image loads. */}
+                    {!loadedImages[category.name] &&
+                      <Spinner/>} {/* Show spinner until image is loaded. Once the image loads, the onLoad handler is triggered, updating the state and making the image visible while hiding the spinner. */}
                     <img
                       src={category.logoSrc}
                       alt={category.name}
